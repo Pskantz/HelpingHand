@@ -79,10 +79,18 @@ export function AdminPage() {
     }
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple password protection - change this to your preferred password
-    if (password === 'helpinghand2024') {
+    // Hämta lösenord från Supabase-tabell 'admin_settings'
+    const { data, error } = await supabase
+      .from('admin_settings')
+      .select('admin_password')
+      .single();
+    if (error) {
+      toast.error('Kunde inte hämta admin-lösenord');
+      return;
+    }
+    if (data && password === data.admin_password) {
       setIsAuthenticated(true);
       localStorage.setItem('admin_auth', 'true');
       toast.success('Välkommen till admin!');
