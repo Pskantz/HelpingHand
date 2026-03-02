@@ -168,6 +168,8 @@ export function AdminPage() {
     setNewMember(member);
     setEditingId(member.id!);
     setShowAddForm(true);
+    // Scroll to form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCancelEdit = () => {
@@ -332,20 +334,33 @@ export function AdminPage() {
             Medarbetare
           </h2>
           <Button 
-            onClick={() => setShowAddForm(!showAddForm)}
+            onClick={() => {
+              if (showAddForm && editingId) {
+                handleCancelEdit();
+              } else {
+                setShowAddForm(!showAddForm);
+              }
+            }}
             className="bg-teal hover:bg-teal-dark gap-2"
           >
             <Plus className="w-4 h-4" />
-            Lägg till medarbetare
+            {showAddForm ? 'Stäng formulär' : 'Lägg till medarbetare'}
           </Button>
         </div>
 
-        {/* Add Member Form */}
+        {/* Add/Edit Member Form */}
         {showAddForm && (
-          <div className="bg-white rounded-2xl shadow-card p-6 mb-8">
-            <h3 className="font-heading text-lg font-bold text-gray-900 mb-4">
-              Ny medarbetare
-            </h3>
+          <div className="bg-white rounded-2xl shadow-card p-6 mb-8 border-l-4 border-teal">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-heading text-lg font-bold text-gray-900">
+                {editingId ? 'Redigera medarbetare' : 'Ny medarbetare'}
+              </h3>
+              {editingId && (
+                <span className="text-sm text-teal font-medium bg-teal/10 px-3 py-1 rounded-full">
+                  Redigeringsläge
+                </span>
+              )}
+            </div>
             <form onSubmit={handleAddMember} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -433,7 +448,7 @@ export function AdminPage() {
                     className="gap-2"
                   >
                     <Upload className="w-4 h-4" />
-                    {uploadingImage ? 'Laddar upp...' : 'Välj bild'}
+                    {uploadingImage ? 'Laddar upp...' : (newMember.image_url ? 'Byt bild' : 'Välj bild')}
                   </Button>
                   {newMember.image_url && (
                     <div className="relative">
@@ -445,7 +460,7 @@ export function AdminPage() {
                       <button
                         type="button"
                         onClick={() => setNewMember({ ...newMember, image_url: undefined })}
-                        className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center"
+                        className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -455,10 +470,20 @@ export function AdminPage() {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <Button type="submit" className="bg-teal hover:bg-teal-dark">
-                  Spara medarbetare
+                <Button type="submit" className="bg-teal hover:bg-teal-dark gap-2">
+                  {editingId ? (
+                    <>
+                      <Edit2 className="w-4 h-4" />
+                      Uppdatera medarbetare
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4" />
+                      Spara medarbetare
+                    </>
+                  )}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => setShowAddForm(false)}>
+                <Button type="button" variant="outline" onClick={handleCancelEdit}>
                   Avbryt
                 </Button>
               </div>
@@ -478,7 +503,7 @@ export function AdminPage() {
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teamMembers.map((member) => (
-              <div key={member.id} className="bg-white rounded-2xl shadow-card p-6">
+              <div key={member.id} className="bg-white rounded-2xl shadow-card p-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
                   {member.image_url ? (
                     <img 
@@ -504,13 +529,22 @@ export function AdminPage() {
                       </p>
                     )}
                   </div>
-                  <button
-                    onClick={() => handleDeleteMember(member.id!)}
-                    className="text-red-500 hover:text-red-700 p-1"
-                    title="Ta bort"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => handleEditMember(member)}
+                      className="text-blue-500 hover:text-blue-700 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                      title="Redigera"
+                    >
+                      <Edit2 className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteMember(member.id!)}
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                      title="Ta bort"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -524,11 +558,11 @@ export function AdminPage() {
           </h3>
           <ul className="space-y-2 text-blue-800">
             <li>• Lägg till nya medarbetare med knappen ovan</li>
+            <li>• Klicka på <Edit2 className="w-4 h-4 inline mx-1" /> för att redigera en medarbetare</li>
+            <li>• Klicka på <Trash2 className="w-4 h-4 inline mx-1" /> för att ta bort</li>
             <li>• Ladda upp bilder direkt från din dator</li>
             <li>• Välj olika färger för varje medarbetare</li>
-            <li>• Ta bort medarbetare när du inte längre behöver dem</li>
             <li>• All information sparas i realtid i Supabase</li>
-            <li>• Tryck på "Spara medarbetare" för att spara ändringar</li>
           </ul>
         </div>
       </main>
