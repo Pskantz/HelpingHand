@@ -526,8 +526,9 @@ export function AdminPage() {
             <li>• Lägg till nya medarbetare med knappen ovan</li>
             <li>• Ladda upp bilder direkt från din dator</li>
             <li>• Välj olika färger för varje medarbetare</li>
-            <li>• All data sparas lokalt i din webbläsare</li>
-            <li>• För att synka med hemsidan: kopiera data och klistra in i koden</li>
+            <li>• Ta bort medarbetare när du inte längre behöver dem</li>
+            <li>• All information sparas i realtid i Supabase</li>
+            <li>• Tryck på "Spara medarbetare" för att spara ändringar</li>
           </ul>
         </div>
       </main>
