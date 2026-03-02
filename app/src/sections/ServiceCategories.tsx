@@ -84,7 +84,7 @@ export function ServiceCategories() {
             Våra tjänster
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Klicka på en kategori för att läsa mer och boka.
+            Klicka på en kategori för att läsa mer och få en gratis offert.
           </p>
         </ScrollReveal>
 

@@ -20,12 +20,10 @@ export function ServicesList() {
     <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center mb-12 lg:mb-16">
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Hos oss kan du boka
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Vi erbjuder ett brett utbud av tjänster för att göra din vardag enklare.
-          </p>
+          
+        <p className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 max-w-3xl mx-auto">
+  Vi erbjuder ett brett utbud av tjänster för att göra din vardag enklare.
+</p>
         </ScrollReveal>
 
         <StaggerContainer 

@@ -126,12 +126,16 @@ export function Footer() {
               </li>
               {/* social icons under contact info */}
               <li className="flex items-center gap-4 mt-4">
-                <a href="https://www.facebook.com/yourpage" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-500 transition-colors">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="https://www.instagram.com/helpinghandsverige?igsh=czU1djl3bGg1eWtu" target="_blank" rel="noopener noreferrer" className="text-pink-500 hover:text-pink-400 transition-colors">
-                  <Instagram className="w-5 h-5" />
-                </a>
+                
+                <a
+  href="https://www.instagram.com/helpinghandsverige?igsh=czU1djl3bGg1eWtu"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-2 text-pink-500 hover:text-pink-400 transition-colors"
+>
+  <Instagram className="w-5 h-5" />
+  <span className="font-medium">helpinghandsverige</span>
+</a>
               </li>
             </ul>
           </div>
