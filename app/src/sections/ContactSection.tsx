@@ -35,12 +35,14 @@ export function ContactSection() {
   // Ingen automatisk förifyllning av namn längre
 
   const helpOptions = [
-    'Barn & Familj',
-    'Hemservice',
-    'Läxhjälp',
-    'Praktisk hjälp',
-    'Hund- & Kattvakt',
+    'Barnvakt',
+    'Bartender',
+    'Servitris/servitör',
     'Eventpersonal',
+    'Hundvakt/kattvakt',
+    'Hantverkare',
+    'Hemstädning',
+    'Bröllop',
     'Annat',
   ];
 

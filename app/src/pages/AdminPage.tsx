@@ -20,6 +20,17 @@ const colorOptions = [
   { name: 'Cyan', value: 'bg-cyan-500' },
 ];
 
+const categories = [
+  { title: 'Barnvakt', value: 'barnvakt' },
+  { title: 'Bartender', value: 'bartender' },
+  { title: 'Servitris/servitör', value: 'servitris-servitor' },
+  { title: 'Eventpersonal', value: 'eventpersonal' },
+  { title: 'Hundvakt/kattvakt', value: 'hundvakt-kattvakt' },
+  { title: 'Hantverkare', value: 'hantverkare' },
+  { title: 'Hemstädning', value: 'hemstadning' },
+  { title: 'Bröllop', value: 'brollop' },
+];
+
 export function AdminPage() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +44,7 @@ export function AdminPage() {
   const [newMember, setNewMember] = useState<TeamMember>({
     name: '',
     role: '',
+    category: [],
     initials: '',
     color: 'bg-pink-500',
     bio: '',
@@ -108,8 +120,8 @@ export function AdminPage() {
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!newMember.name || !newMember.role) {
-      toast.error('Namn och roll är obligatoriska');
+    if (!newMember.name) {
+      toast.error('Namn är obligatoriskt');
       return;
     }
 
@@ -153,6 +165,7 @@ export function AdminPage() {
       setNewMember({
         name: '',
         role: '',
+        category: [],
         initials: '',
         color: 'bg-pink-500',
         bio: '',
@@ -165,7 +178,14 @@ export function AdminPage() {
   };
 
   const handleEditMember = (member: TeamMember) => {
-    setNewMember(member);
+    setNewMember({
+      ...member,
+      category: Array.isArray(member.category)
+        ? member.category
+        : member.category
+        ? [member.category]
+        : [],
+    });
     setEditingId(member.id!);
     setShowAddForm(true);
     // Scroll to form
@@ -177,6 +197,7 @@ export function AdminPage() {
     setNewMember({
       name: '',
       role: '',
+      category: [],
       initials: '',
       color: 'bg-pink-500',
       bio: '',
@@ -374,18 +395,39 @@ export function AdminPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="role">Roll *</Label>
-                  <Input
-                    id="role"
-                    value={newMember.role}
-                    onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
-                    placeholder="T.ex. Barnvakt"
-                    className="mt-1"
-                  />
+                  {/* Rollfältet är dolt, men finns kvar i modellen om det behövs */}
                 </div>
               </div>
               
               <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Kategorier</Label>
+                  <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                    {categories.map((category) => {
+                      const isSelected = Array.isArray(newMember.category)
+                        ? newMember.category.includes(category.value)
+                        : false;
+                      return (
+                        <button
+                          key={category.value}
+                          type="button"
+                          onClick={() => {
+                            const currentCategories = Array.isArray(newMember.category)
+                              ? newMember.category
+                              : [];
+                            const nextCategories = currentCategories.includes(category.value)
+                              ? currentCategories.filter((value) => value !== category.value)
+                              : [...currentCategories, category.value];
+                            setNewMember({ ...newMember, category: nextCategories });
+                          }}
+                          className={`rounded-2xl border p-3 text-left text-sm transition-all ${isSelected ? 'border-teal bg-teal/10 text-teal' : 'border-gray-200 bg-white text-gray-700 hover:border-teal'}`}
+                        >
+                          {category.title}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
                 <div>
                   <Label htmlFor="initials">Initialer (valfritt)</Label>
                   <Input
@@ -522,7 +564,13 @@ export function AdminPage() {
                     <h3 className="font-heading text-lg font-bold text-gray-900">
                       {member.name}
                     </h3>
-                    <p className="text-gray-600 text-sm">{member.role}</p>
+                    <p className="text-gray-600 text-sm">
+                      {Array.isArray(member.category) && member.category.length > 0
+                        ? member.category
+                            .map((slug) => categories.find((item) => item.value === slug)?.title ?? slug)
+                            .join(', ')
+                        : ''}
+                    </p>
                     {member.bio && (
                       <p className="text-gray-500 text-sm mt-2 line-clamp-2">
                         {member.bio}

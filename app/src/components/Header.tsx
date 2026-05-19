@@ -15,14 +15,16 @@ const navLinks = [
   { name: 'Hem', href: '/' },
   { 
     name: 'Våra tjänster', 
-    href: '/tjanster#barn-familj',
+    href: '/tjanster#barnvakt',
     dropdown: [
-      { name: 'Barn & Familj', href: '/tjanster#barn-familj' },
-      { name: 'Hemservice', href: '/tjanster#hemservice' },
-      { name: 'Läxhjälp', href: '/tjanster#laxhjalp' },
-      { name: 'Praktisk hjälp', href: '/tjanster#praktisk-hjalp' },
-      { name: 'Hund- & Kattvakt', href: '/tjanster#djurpassning' },
-      { name: 'Eventpersonal', href: '/tjanster#event' },
+      { name: 'Barnvakt', href: '/tjanster#barnvakt' },
+      { name: 'Bartender', href: '/tjanster#bartender' },
+      { name: 'Servitris/servitör', href: '/tjanster#servitris-servitor' },
+      { name: 'Eventpersonal', href: '/tjanster#eventpersonal' },
+      { name: 'Hundvakt/kattvakt', href: '/tjanster#hundvakt-kattvakt' },
+      { name: 'Hantverkare', href: '/tjanster#hantverkare' },
+      { name: 'Hemstädning', href: '/tjanster#hemstadning' },
+      { name: 'Bröllop', href: '/tjanster#brollop' },
     ]
   },
   { name: 'Om oss', href: '/om-oss' },

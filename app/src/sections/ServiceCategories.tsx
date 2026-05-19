@@ -1,56 +1,72 @@
 import { useState, useEffect } from 'react';
-import { Baby, Home, Wrench, PawPrint, PartyPopper, BookOpen, ArrowRight, X } from 'lucide-react';
+import { Baby, Home, Wrench, PawPrint, PartyPopper, ArrowRight, X, Users, Cake } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ScrollReveal';
 
 const categories = [
   {
-    slug: 'barn-familj',
+    slug: 'barnvakt',
     icon: Baby,
-    title: 'Barn & Familj',
-    description: 'Trygg barnpassning du kan känna dig trygg med.',
+    title: 'Barnvakt',
+    description: 'Barnpassning och barnomsorg med trygg, erfaren personal.',
     color: 'bg-pink-100 text-pink-600',
     details: 'Vi erbjuder säker och kärleksfull barnpassning. Vår personal är erfaren, utbildad och älskar barn. Vi kan ta hand om ditt barn hemma, hämta från förskola eller skola, och organisera roliga aktiviteter.',
   },
   {
-    slug: 'hemservice',
-    icon: Home,
-    title: 'Hemservice',
-    description: 'Städning, disk, tvätt och matinköp.',
-    color: 'bg-blue-100 text-blue-600',
-    details: 'Vi hjälper till med städning, disk, tvätt och matinköp för att göra din vardag enklare. Vår personal är noggrann och pålitlig.',
-  },
-  {
-    slug: 'laxhjalp',
-    icon: BookOpen,
-    title: 'Läxhjälp',
-    description: 'Stöd och hjälp med läxor och skolarbete.',
-    color: 'bg-yellow-100 text-yellow-600',
-    details: 'Vi erbjuder professionell läxhjälp med fokus på att förstå, inte bara att göra. Vi arbetar med alla åldrar och drar nytta av vår lärarbakgrund.',
-  },
-  {
-    slug: 'praktisk-hjalp',
-    icon: Wrench,
-    title: 'Praktisk hjälp',
-    description: 'Trädgård, bildäck och montering.',
+    slug: 'bartender',
+    icon: PartyPopper,
+    title: 'Bartender',
+    description: 'Professionella bartendrar för fest, event och privata tillställningar.',
     color: 'bg-orange-100 text-orange-600',
-    details: 'Vi kan montera möbler, byta bildäck, underhålla din trädgård och mycket mer. Duktig personal med praktiska färdigheter.',
+    details: 'Våra erfarna bartendrar kan skapa cocktails, drinkar och servera på din fest eller event. De kan både bartendera och socialera med dina gäster.',
   },
   {
-    slug: 'djurpassning',
-    icon: PawPrint,
-    title: 'Hund- & Kattvakt',
-    description: 'Kärleksfull passning av dina husdjur.',
-    color: 'bg-green-100 text-green-600',
-    details: 'Vi älskar djur och kan passa din hund eller katt när du är borta. Vi erbjuder dagvård, promenader och ömsesidig kärlek.',
+    slug: 'servitris-servitor',
+    icon: Users,
+    title: 'Servitris/servitör',
+    description: 'Servispersonal som hjälper till med servering, dukning och service.',
+    color: 'bg-blue-100 text-blue-600',
+    details: 'Professionell servispersonal som kan hantera allt från dukning till servering och tvätt. Perfekt för middagar, fester och events.',
   },
   {
-    slug: 'event',
+    slug: 'eventpersonal',
     icon: PartyPopper,
     title: 'Eventpersonal',
-    description: 'Barnpassning vid bröllop eller fest.',
+    description: 'Allt från eventplanering till stöd för möten och fester.',
     color: 'bg-purple-100 text-purple-600',
-    details: 'Vi tillhandahåller barnpassare för bröllop, fester och andra event. Din personal kan passa barn på plats medan du njuter av festen.',
+    details: 'Vi tillhandahåller eventpersonal för att göra din fest eller möte perfekt. Från barnpassning vid events till fullständig logistik och support.',
+  },
+  {
+    slug: 'hundvakt-kattvakt',
+    icon: PawPrint,
+    title: 'Hundvakt/kattvakt',
+    description: 'Trygg djurpassning hemma hos dig när du är borta.',
+    color: 'bg-green-100 text-green-600',
+    details: 'Vi älskar djur och kan passa din hund eller katt när du är borta. Vi erbjuder dagvård, promenader och omvårdnad med kärlek.',
+  },
+  {
+    slug: 'hantverkare',
+    icon: Wrench,
+    title: 'Hantverkare',
+    description: 'Praktiska händer för små och stora hantverksjobb i hemmet.',
+    color: 'bg-yellow-100 text-yellow-600',
+    details: 'Vi kan montera möbler, byta bildäck, underhålla din trädgård och mycket mer. Duktig personal med praktiska färdigheter och erfarenhet.',
+  },
+  {
+    slug: 'hemstadning',
+    icon: Home,
+    title: 'Hemstädning',
+    description: 'Noggrann städning av hemmet efter dina önskemål.',
+    color: 'bg-cyan-100 text-cyan-600',
+    details: 'Vi hjälper till med städning, disk, tvätt och hemunderhåll för att göra din vardag enklare. Vår personal är noggrann, pålitlig och omtänksam.',
+  },
+  {
+    slug: 'brollop',
+    icon: Cake,
+    title: 'Bröllop',
+    description: 'Servicepersonal och planering för att göra bröllopet perfekt.',
+    color: 'bg-rose-100 text-rose-600',
+    details: 'Vi tillhandahåller barnpassning, servispersonal och event support för att göra ditt bröllop perfekt. Låt oss hantera detaljerna medan du njuter av dagen.',
   },
 ];
 
@@ -68,12 +84,32 @@ export function ServiceCategories() {
     }
   }, [location.hash]);
 
+  // Also check for query param (when navigating from homepage)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categorySlug = params.get('kategori');
+    if (categorySlug && location.pathname === '/tjanster') {
+      const found = categories.find((c) => c.slug === categorySlug);
+      if (found) {
+        setSelectedCategory(found);
+        // Scroll to modal after a brief delay to ensure it's rendered
+        setTimeout(() => {
+          const modal = document.querySelector('.fixed.inset-0');
+          if (modal) modal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+        // Clean up the query param
+        window.history.replaceState(null, '', '/tjanster');
+      }
+    }
+  }, [location.pathname, location.search]);
+
   const handleClick = (category: typeof categories[0]) => {
     if (location.pathname === '/tjanster') {
       setSelectedCategory(category);
       return;
     }
-    navigate(`/tjanster#${category.slug}`);
+    // Navigate to services page with query param to open specific category
+    navigate(`/tjanster?kategori=${category.slug}`);
   };
 
   return (
@@ -89,7 +125,7 @@ export function ServiceCategories() {
         </ScrollReveal>
 
         <StaggerContainer 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           staggerDelay={0.1}
         >
           {categories.map((category, index) => (

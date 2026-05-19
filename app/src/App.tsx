@@ -28,7 +28,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/om-oss" element={<AboutPage />} />
         <Route path="/tjanster" element={<ServicesPage />} />
-        <Route path="/personal" element={<TeamPage />} />
+        <Route path="/personal/:category?" element={<TeamPage />} />
         <Route path="/jobba" element={<JobsPage />} />
         <Route path="/kontakt" element={<ContactPage />} />
         <Route path="/admin" element={<AdminPage />} />

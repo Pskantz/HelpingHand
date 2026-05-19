@@ -10,6 +10,7 @@ CREATE TABLE public.team_members (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(255) NOT NULL,
   role VARCHAR(255) NOT NULL,
+  category TEXT[],
   initials VARCHAR(10),
   color VARCHAR(50) DEFAULT 'bg-pink-500',
   image_url TEXT,
@@ -65,6 +66,23 @@ Kontrollera att `src/lib/supabase.ts` har rätt:
 - `supabaseKey`: En gyldig anon-nyckel
 
 Dessa är redan inställda i koden.
+
+## Uppdatera befintlig databas
+
+Om du redan har en `team_members`-tabell i Supabase, kör följande SQL i Supabase SQL Editor för att lägga till det nya `category`-fältet:
+
+```sql
+ALTER TABLE public.team_members
+ADD COLUMN IF NOT EXISTS category TEXT[];
+
+ALTER TABLE public.team_members
+ALTER COLUMN category TYPE TEXT[]
+USING CASE
+  WHEN pg_typeof(category) = 'text'::regtype THEN ARRAY[category]::TEXT[]
+  WHEN pg_typeof(category) = 'character varying'::regtype THEN ARRAY[category]::TEXT[]
+  ELSE category
+END;
+```
 
 ## Testa
 

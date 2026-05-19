@@ -1,13 +1,15 @@
-import { HandHeart, Mail, Phone, Facebook, Instagram } from 'lucide-react';
+import { HandHeart, Mail, Phone, Instagram } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const serviceLinks = [
-  { name: 'Barn & Familj', href: '#barn-familj' },
-  { name: 'Hemservice', href: '#hemservice' },
-  { name: 'Läxhjälp', href: '#laxhjalp' },
-  { name: 'Praktisk hjälp', href: '#praktisk-hjalp' },
-  { name: 'Hund- & Kattvakt', href: '#djurpassning' },
-  { name: 'Eventpersonal', href: '#event' },
+  { name: 'Barnvakt', href: '#barnvakt' },
+  { name: 'Bartender', href: '#bartender' },
+  { name: 'Servitris/servitör', href: '#servitris-servitor' },
+  { name: 'Eventpersonal', href: '#eventpersonal' },
+  { name: 'Hundvakt/kattvakt', href: '#hundvakt-kattvakt' },
+  { name: 'Hantverkare', href: '#hantverkare' },
+  { name: 'Hemstädning', href: '#hemstadning' },
+  { name: 'Bröllop', href: '#brollop' },
 ];
 
 const companyLinks = [

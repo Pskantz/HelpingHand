@@ -9,7 +9,8 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 export interface TeamMember {
   id?: string;
   name: string;
-  role: string;
+  role?: string; // Ej obligatorisk
+  category?: string[];
   initials: string;
   color: string;
   image_url?: string;
