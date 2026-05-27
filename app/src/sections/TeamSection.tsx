@@ -32,7 +32,7 @@ const categories: TeamCategory[] = [
   { title: 'Hantverkare', slug: 'hantverkare', description: 'Praktiska händer för små och stora hantverksjobb i hemmet.' },
   { title: 'Hemstädning', slug: 'hemstadning', description: 'Noggrann städning av hemmet efter dina önskemål.' },
   { title: 'Bröllop', slug: 'brollop', description: 'Servicepersonal och planering för att göra bröllopet perfekt.' },
-];
+].sort((a, b) => a.title.localeCompare(b.title, 'sv'));
 
 const defaultMembers: TeamMember[] = [
   { id: '1', name: 'Silvia', role: 'Barnvakt & Lärare', category: ['barnvakt'], initials: 'S', color: 'bg-pink-500' },

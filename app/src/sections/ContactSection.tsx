@@ -23,14 +23,30 @@ const bookingTerms = [
 export function ContactSection() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const medarbetare = params.get('medarbetare') || '';
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    message: '',
+    message: medarbetare ? `Jag vill boka ${medarbetare} för uppdrag.` : '',
     helpTypes: [] as string[],
   });
   const [sending, setSending] = useState(false);
+  // Om medarbetare ändras i URL, uppdatera meddelandet om det är tomt eller matchar förra medarbetaren
+  useEffect(() => {
+    if (medarbetare) {
+      setFormData((prev) => {
+        // Endast sätt om meddelandet är tomt eller redan förifyllt med annan medarbetare
+        if (!prev.message || prev.message.startsWith('Jag vill boka')) {
+          return {
+            ...prev,
+            message: `Jag vill boka ${medarbetare} för uppdrag.`
+          };
+        }
+        return prev;
+      });
+    }
+  }, [medarbetare]);
 
   // Ingen automatisk förifyllning av namn längre
 
@@ -110,6 +126,11 @@ export function ContactSection() {
                 Skicka ett meddelande
               </h3>
               <form onSubmit={handleSubmit} className="space-y-5">
+                {medarbetare && (
+                  <div className="mb-2 p-3 rounded-xl bg-teal-50 border border-teal-200 text-teal-900 font-medium">
+                    <span>Du bokar: <b>{medarbetare}</b></span>
+                  </div>
+                )}
                 <div>
                   <Label htmlFor="name" className="text-gray-700 font-medium mb-2 block">
                     Namn
